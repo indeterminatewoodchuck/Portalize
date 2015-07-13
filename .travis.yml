@@ -1,4 +1,8 @@
 language: node_js
 node_js:
-  - '0.8'
-  - '0.10'
+- '0.12.7'
+deploy:
+  provider: heroku
+  api_key:
+    secure: WmBZUh8RJpiU9NvR1JahifZc2XpN15wh0NKsxIGcDJaZQ7ZA5aSPFcao/d+e54HDb8+khcQk0aCYCDg7c1S73HgJmPIMF4Pu8IO9REGYMjwVpn/3ummpmx5fP10T/pSYuDqN1ZOUyYRBvQlCX75Jyqcc26Jkvoea/yOIw5+S/YIycSkSWykzZxwWvojvZaM37RrLhUMZq6tenwG47ZuvSIu9AvcYp71dGFg759E+bKQ7UPLQNFB+NMO4MFiwwvEZcRnvdIg3dgS++IIZIC1XRTUtLEDgixix3fkyWKahfopOG1TcUtfWTCMWQB+67/TxyxJas9KvJ4DRXgrprnpU7D5enX0kvQOw2eUp6BxyorFc+Ohr+yIZkEXYDe4jNJZJMafPJcZmDxgcDW2gS0eEHyL1zM11azUfdzX1XV8k3FF/7M9N3LmIg1spNvj2s3OhrgCzWue7hUSxtPc2ZJOFQlw1exCBPPM2ae/r9jlEBbmMcSrA9vSY45RmKRZKyQNwEPY6OZli3L0C2ls+W7AvJCJPF7ifHnxzK21G6QyJzr2lih+cH2i/mWMkJfZr2FpLIcsJUHZNTXRzyqyFYmf4SaQM91nwF7u5vjDEzoNzrYVWeVKbg5wH5sNNpi+l/t6Ll5MaPcMHKSjm+LFsz7/wkj3IfGQzRERYy18cKSzlACw=
+  app: hidden-sea-6785
