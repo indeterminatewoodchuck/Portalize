@@ -17,12 +17,14 @@ var createChatSession = function() {
 
   // Change this to our production server url
   var socket = io('http://localhost:3000');
+  
+  setupVideoChatListeners(comm, chatWindow, data);
 
   // will need to emit some kind of customer number?
   socket.emit('customerRequest');
 
-  socket.on('joinRoom', function(data) {
-    setupVideoChatListeners(comm, chatWindow, data);
+  socket.on('customerRoom', function(data) {
+    comm.connect(data);
   });
 };
 
@@ -39,9 +41,6 @@ var setupVideoChatListeners = function(comm, chatWindow, data){
     comm.leave(true);
     chatWindow.remove();
   });
-
-  // figure out what format data is being sent back with
-  comm.connect(data.SOMETHING);
 };
 
 chatButton.addEventListener('click', createChatSession, false);
