@@ -1,5 +1,5 @@
 // TODO: require mongoose or whatever we're using
-// TODO: possibly use a promise library
+// require a db, will use the db variable name for now
 var jwt = require('jsonwebtoken');
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
         if( user.password != req.body.password ){ // check if the password matches
           res.json({ success: false, message: 'Authentication failed. Wrong password.' });
         } else {
-          var token = jwt.sign(user, app.get('secret'), { // if a user is found and the password is right, create a token
+          var token = jwt.sign(user, 'disdasecretyo', { // if a user is found and the password is right, create a token
             expiresInMinutes: 1440 // expires in 24 hours
           });
 
@@ -28,6 +28,9 @@ module.exports = {
   },
 
   signup: function(req, res, next){
+    var username = req.body.username;
+    var password = req.body.password;
+
     // if user is in the database
       // call next because the user is already in the database
       // else create the new user and issue a new token
