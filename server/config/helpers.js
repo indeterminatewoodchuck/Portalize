@@ -21,11 +21,17 @@ module.exports = {
   },
 
   errorLogger: function(err, req, res, next){
-
+    // log the error then send it to the next middleware in
+    // middleware.js
+    console.err(err.stack);
+    next(err);
   },
 
   errorHandler: function(err, req, res, next){
-
+    // log the error then send it to the next middleware in
+    // middleware.js
+    console.error(err.stack);
+    next(err);
   }
 
 };
