@@ -4,16 +4,19 @@ var helpers = require('./helpers.js');
 
 module.exports = function(app, express, server, io){
 
-  var userRouter = express.Router();
+  var userRouter = express.Router(); // user sign-in and user sign-out
 
+  // url encoding, json parser, and terminal logs
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(morgan('dev'));
 
-  app.use('/library', express.static(__dirname + '/../../library'));
-  // app.use('/login', express.static(__dirname + '/../../login')); // don't protect /login route
+  // unprotected routes
+  app.use('/library', express.static(__dirname + '/../../library/chatLibrary.js'));
+  app.use('/login', express.static(__dirname + '/../../login/login.html'));
 
-  // app.use(helpers.checkAuth);
+  // protect the root path, which is where we will mount our app
+  app.use(helpers.checkAuth);
   app.use(express.static(__dirname + '/../../client/dist'));
   // app.use(helpers.errorLogger);
   // app.use(helpers.errorHandler);
