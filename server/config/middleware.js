@@ -13,7 +13,7 @@ module.exports = function(app, express, server, io){
 
   // unprotected routes
   app.use('/library', express.static(__dirname + '/../../library/chatLibrary.js'));
-  app.use('/login', express.static(__dirname + '/../../login/login.html'));
+  app.use('/login', express.static(__dirname + '/../../login'));
 
   // protect the root path, which is where we will mount our app
   app.use(helpers.checkAuth);
