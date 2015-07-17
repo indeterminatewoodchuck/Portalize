@@ -3,14 +3,15 @@ var bodyParser = require('body-parser');
 var helpers = require('./helpers.js');
 
 module.exports = function(app, express, server, io){
-  app.set('secret', 'disdasecretyo');
+
+  var userRouter = express.Router();
 
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(morgan('dev'));
 
   app.use('/library', express.static(__dirname + '/../../library'));
-  // app.get('/login', express.static(__dirname + '/../../login')); // don't protect /login route
+  // app.use('/login', express.static(__dirname + '/../../login')); // don't protect /login route
 
   // app.use(helpers.checkAuth);
   app.use(express.static(__dirname + '/../../client/dist'));
@@ -21,4 +22,7 @@ module.exports = function(app, express, server, io){
   io.on('connection', function(socket) {
     server.socketroute.socketroute(io, socket);
   });
+
+  app.use('/api/users', userRouter);
+  // require('../routes/userRoutes.js')(userRouter);
 };
