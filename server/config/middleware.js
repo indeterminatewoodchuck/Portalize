@@ -9,12 +9,11 @@ module.exports = function(app, express, server, io){
   app.use(bodyParser.json());
   app.use(morgan('dev'));
 
-  app.use(express.static(__dirname + '/../../client/dist'));
   app.use('/library', express.static(__dirname + '/../../library'));
   // app.get('/login', express.static(__dirname + '/../../login')); // don't protect /login route
 
-  // protect the root route except for library and login/signup
   // app.use(helpers.checkAuth);
+  app.use(express.static(__dirname + '/../../client/dist'));
   // app.use(helpers.errorLogger);
   // app.use(helpers.errorHandler);
 
