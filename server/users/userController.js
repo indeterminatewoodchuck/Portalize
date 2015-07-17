@@ -13,7 +13,7 @@ module.exports = {
         if( user.password != req.body.password ){ // check if the password matches
           res.json({ success: false, message: 'Authentication failed. Wrong password.' });
         } else {
-          var token = jwt.sign(user, app.get('superSecret'), { // if a user is found and the password is right, create a token
+          var token = jwt.sign(user, app.get('secret'), { // if a user is found and the password is right, create a token
             expiresInMinutes: 1440 // expires in 24 hours
           });
 
@@ -37,7 +37,7 @@ module.exports = {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if( token ){
-      jwt.verify(token, app.get('superSecret'), function(err, decoded){
+      jwt.verify(token, app.get('secret'), function(err, decoded){
         if( err ){
           return res.json({ success: false, message: 'Failed to authenticate token.' });
         } else {
