@@ -5,6 +5,8 @@ module.exports = function(app, express, server, io){
   // var userRouter = express.Router();
   // app.set('secret', 'disdasecretyo');
 
+  app.set('secret', 'disdasecretyo'); // may want to change this later
+
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(morgan('dev'));
