@@ -2,7 +2,7 @@ var db = require('../models/index.js');
 var jwt = require('jsonwebtoken');
 
 module.exports = {
-  signin: function(req, res, next){
+  signin: function(req, res){
     db.User.findAll({ where: { email: req.body.email } }).then(function(user){
       user.comparePassword(req.body.password).then(function(valid){
         if( valid ){
@@ -15,7 +15,7 @@ module.exports = {
     });
   },
 
-  signup: function(req, res, next){
+  signup: function(req, res){
     // first sign up the organization, THEN sign up the user
 
     // var username = req.body.username;
