@@ -3,15 +3,19 @@ var jwt = require('jsonwebtoken');
 
 module.exports = {
   signin: function(req, res){
-    db.User.findAll({ where: { email: req.body.email } }).then(function(user){
-      user.comparePassword(req.body.password).then(function(valid){
-        if( valid ){
-          res.json({ success: false, message: 'Authentication failed.' });
-        } else {
-          var token = jwt.sign(user, 'disdasecretyo', { expiresInMinutes: 1440 }); // expires in 24 hours
-          res.json({ success: true, message: 'Enjoy your token!', token: token });
-        }
-      });
+    db.User.findOne({ where: { email: req.body.email } }).then(function(user){
+      if( !user ){
+        res.json({ success: false, message: 'Authentication failed.' })
+      } else {
+        user.comparePassword(req.body.password, function(valid){
+          if( valid ){
+            res.json({ success: false, message: 'Authentication failed.' });
+          } else {
+            var token = jwt.sign(user, 'disdasecretyo', { expiresInMinutes: 20 });
+            res.json({ success: true, message: 'Enjoy your token!', token: token });
+          }
+        });
+      }
     });
   },
 
