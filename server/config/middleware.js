@@ -11,21 +11,24 @@ module.exports = function(app, express, server, io){
   app.use(bodyParser.json());
   app.use(morgan('dev'));
 
-  // unprotected routes
+  // unprotected static routes
   app.use('/library', express.static(__dirname + '/../../library/chatLibrary.js'));
   app.use('/login', express.static(__dirname + '/../../login'));
 
-  // protect the root path, which is where we will mount our app
+  // unprotected api routes
+  app.use('/api/users', userRouter);
+  require('../routes/userRoutes.js')(userRouter);
+
+  /* ----------PROTECTED ROUTES---------- */
   app.use(helpers.checkAuth);
   app.use(express.static(__dirname + '/../../client/dist'));
   // app.use(helpers.errorLogger);
   // app.use(helpers.errorHandler);
+  /* ----------PROTECTED ROUTES---------- */
 
   server.socketroute = require('./socketroute.js');
   io.on('connection', function(socket) {
     server.socketroute.socketroute(io, socket);
   });
 
-  app.use('/api/users', userRouter);
-  // require('../routes/userRoutes.js')(userRouter);
 };
