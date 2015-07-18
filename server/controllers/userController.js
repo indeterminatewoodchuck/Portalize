@@ -1,9 +1,8 @@
-// TODO: require mongoose or whatever we're using
-// require a db, will use the db variable name for now
+var db = require('../models/index.js');
 var jwt = require('jsonwebtoken');
 
 module.exports = {
-  signin: function(req, res, next){ // mongo implementation pending refactor to sequelize
+  signin: function(req, res, next){
     // User.findOne({ name: req.body.name }, function(err, user){
     //   if( err ) throw err;
     //
