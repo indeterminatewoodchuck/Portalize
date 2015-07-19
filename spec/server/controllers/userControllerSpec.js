@@ -23,8 +23,26 @@ describe('User Controller', function(){
       });
   });
 
-  xit('Should not authenticate users that provide invalid passwords', function(){
+  it('Should not authenticate users that provide invalid passwords', function(done){
 
+    var newUser = db.User.build({
+      first_name: 'Arnold',
+      last_name: 'Schwarzennegger',
+      OrganizationID: 50,
+      title: 'T-1000',
+      email: 'governator@california.gov',
+      password: 'terminator'
+    });
+    newUser.save().then(function(user){
+      request(app)
+        .post('/api/users/signin')
+        .send({ email: 'governator@california.gov', password: 'terminate' })
+        .end(function(err, res){
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message).to.equal('Invalid password.')
+          done();
+        });
+    });
   });
 
   xit('Should issue a token upon successful sign in', function(){

@@ -8,11 +8,11 @@ module.exports = {
         res.json({ success: false, message: 'Invalid username.' });
       } else {
         user.checkPassword(req.body.password, function(valid){
-          if( valid ){
-            res.json({ success: false, message: 'Invalid password.' });
-          } else {
+          if( valid === true ){
             var token = jwt.sign(user, 'disdasecretyo', { expiresInMinutes: 20 });
             res.json({ success: true, message: 'Enjoy your token!', token: token });
+          } else {
+            res.json({ success: false, message: 'Invalid password.' });
           }
         });
       }
