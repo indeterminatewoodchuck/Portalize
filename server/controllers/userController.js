@@ -5,11 +5,11 @@ module.exports = {
   signin: function(req, res){
     db.User.findOne({ where: { email: req.body.email } }).then(function(user){
       if( !user ){
-        res.json({ success: false, message: 'Authentication failed.' });
+        res.json({ success: false, message: 'Invalid username.' });
       } else {
         user.checkPassword(req.body.password, function(valid){
           if( valid ){
-            res.json({ success: false, message: 'Authentication failed.' });
+            res.json({ success: false, message: 'Invalid password.' });
           } else {
             var token = jwt.sign(user, 'disdasecretyo', { expiresInMinutes: 20 });
             res.json({ success: true, message: 'Enjoy your token!', token: token });
