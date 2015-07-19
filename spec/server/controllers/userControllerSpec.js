@@ -24,7 +24,6 @@ describe('User Controller', function(){
   });
 
   it('Should not authenticate users that provide invalid passwords', function(done){
-
     var newUser = db.User.build({
       first_name: 'Arnold',
       last_name: 'Schwarzennegger',
