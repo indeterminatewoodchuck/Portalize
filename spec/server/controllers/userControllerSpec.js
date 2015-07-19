@@ -12,6 +12,16 @@ describe('User Controller', function(){
     });
   });
 
-  
+  it('Should not authenticate users that don\'t exist', function(){
+
+  });
+
+  it('Should not authenticate users that provide invalid passwords', function(){
+
+  });
+
+  it('Should issue a token upon successful sign in', function(){
+
+  });
 
 });
