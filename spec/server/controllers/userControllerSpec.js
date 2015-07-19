@@ -12,15 +12,22 @@ describe('User Controller', function(){
     });
   });
 
-  it('Should not authenticate users that don\'t exist', function(){
+  it('Should not authenticate users that don\'t exist', function(done){
+    request(app)
+      .post('/api/users/signin')
+      .send({ email: 'ding@dong.com', password: 'dingdong123' })
+      .end(function(err, res){
+        expect(res.body.success).to.equal(false);
+        expect(res.body.message).to.equal('Invalid username.');
+        done();
+      });
+  });
+
+  xit('Should not authenticate users that provide invalid passwords', function(){
 
   });
 
-  it('Should not authenticate users that provide invalid passwords', function(){
-
-  });
-
-  it('Should issue a token upon successful sign in', function(){
+  xit('Should issue a token upon successful sign in', function(){
 
   });
 
