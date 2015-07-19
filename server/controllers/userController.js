@@ -44,7 +44,7 @@ module.exports = {
     });
   },
 
-  signupworg: function(req, res){
+  signupwithorg: function(req, res){
     db.Organization.findOne({ where: { name: req.body.businessName } }).then(function(org){
       if( org ){ res.json({ success: false, message: 'Organization already exists.' }); }
       db.User.findOne({ where: { email: req.body.email } }).then(function(user){
