@@ -8,4 +8,10 @@ var agent = superagent.agent();
 
 describe('User Controller', function(){
 
+  beforeEach(function(done){
+    db.sequelize.sync({force: true}).then(function(){
+      done();
+    });
+  });
+
 });
