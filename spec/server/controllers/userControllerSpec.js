@@ -193,8 +193,20 @@ describe('User Controller', function(){
     });
   });
 
-  xit('Should not be able to sign up an existing user', function(done){
-
+  it('Should not be able to sign up an existing user', function(done){
+    var newUser = db.User.build({
+      email: 'elonmusk@teslamotors.com'
+    });
+    newUser.save().then(function(user){
+      request(app)
+        .post('/api/users/signupwithorg')
+        .send({ businessName: 'Tesla Motors', email: 'elonmusk@teslamotors.com' })
+        .end(function(err, res){
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message).to.equal('User already exists.');
+          done();
+        });
+    });
   });
 
   xit('Should issue a token upon successful sign up', function(done){
