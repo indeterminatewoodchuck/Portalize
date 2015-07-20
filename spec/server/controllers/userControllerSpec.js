@@ -209,7 +209,29 @@ describe('User Controller', function(){
     });
   });
 
-  xit('Should issue a token upon successful sign up', function(done){
-
+  it('Should issue a token upon successful sign up', function(done){
+    request(app)
+      .post('/api/users/signupwithorg')
+      .send({
+        firstName: 'Darth',
+        lastName: 'Vader',
+        jobTitle: 'Dark Lord',
+        email: 'darthvader@deathstar.com',
+        password: 'ihatetheemperor',
+        businessName: 'Galactic Empire',
+        businessPassword: 'ihatejedi',
+        address: 'Death Star',
+        city: 'N/A',
+        state: 'N/A',
+        zip: 'N/A',
+        country: 'N/A',
+        industry: 'ruling the galaxy'
+      })
+      .end(function(err, res){
+        expect(res.body.success).to.equal(true);
+        expect(res.body.message).to.equal('Enjoy your token!');
+        expect(res.body.token).to.exist;
+        done();
+      });
   });
 });
