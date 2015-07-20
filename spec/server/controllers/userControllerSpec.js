@@ -176,4 +176,16 @@ describe('User Controller', function(){
         });
     });
   });
+
+  xit('Should not be able to sign up an existing organization', function(done){
+
+  });
+
+  xit('Should not be able to sign up an existing user', function(done){
+
+  });
+
+  xit('Should issue a token upon successful sign up', function(done){
+
+  });
 });
