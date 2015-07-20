@@ -22,26 +22,30 @@ module.exports = {
   signup: function(req, res){
     db.Organization.findOne({ where: { name: req.body.businessName } }).then(function(org){
       if( !org ){ res.json({ success: false, message: 'Organization does not exist.' }); }
-      org.checkPassword(req.body.businessPassword, function(valid){
-        if( !valid ){ res.json({ success: false, message: 'Wrong organization password.' }); }
-        else {
-          db.User.findOne({ where: { email: req.body.email } }).then(function(user){
-            if( user ){ res.json({ success: false, message: 'User already exists.' }); }
-            var orgUser = db.User.build({
-              first_name: req.body.firstName,
-              last_name: req.body.lastName,
-              OrganizationID: org.id,
-              title: req.body.jobTitle,
-              email: req.body.email,
-              password_hash: req.body.password
+      else {
+        org.checkPassword(req.body.businessPassword, function(valid){
+          if( !valid ){ res.json({ success: false, message: 'Wrong organization password.' }); }
+          else {
+            db.User.findOne({ where: { email: req.body.email } }).then(function(user){
+              if( user ){ res.json({ success: false, message: 'User already exists.' }); }
+              else {
+                var orgUser = db.User.build({
+                  first_name: req.body.firstName,
+                  last_name: req.body.lastName,
+                  OrganizationID: org.id,
+                  title: req.body.jobTitle,
+                  email: req.body.email,
+                  password_hash: req.body.password
+                });
+                orgUser.save().then(function(newUser){
+                  var token = jwt.sign(newUser, 'disdasecretyo', { expiresInMinutes: 20 });
+                  res.json({ success: true, message: 'Enjoy your token!', token: token });
+                });
+              }
             });
-            orgUser.save().then(function(newUser){
-              var token = jwt.sign(newUser, 'disdasecretyo', { expiresInMinutes: 20 });
-              res.json({ success: true, message: 'Enjoy your token!', token: token });
-            });
-          });
-        }
-      });
+          }
+        });
+      }
     });
   },
 

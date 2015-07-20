@@ -66,12 +66,54 @@ describe('User Controller', function(){
     });
   });
 
-  xit('Should not allow users to sign up with a non-existing organizations', function(done){
-
+  it('Should not allow users to sign up with a non-existing organizations', function(done){
+    request(app)
+      .post('/api/users/signup')
+      .send({
+        firstName: 'i',
+        lastName: 'don\'t',
+        jobTitle: 'really',
+        email: 'care',
+        password: 'about',
+        businessName: 'this',
+        businessPassword: 'one'
+      })
+      .end(function(err, res){
+        expect(res.body.success).to.equal(false);
+        expect(res.body.message).to.equal('Organization does not exist.');
+        done();
+      });
   });
 
-  xit('Should not allow users to sign up with the wrong organization password', function(done){
-
+  it('Should not allow users to sign up with the wrong organization password', function(done){
+    var org = db.Organization.build({
+      name: "Pillar of Autumn",
+      address: "Installation 347",
+      city: "N/A",
+      state: "N/A",
+      zip: "N/A",
+      country: "N/A",
+      industry: "Killing Covenant",
+      password_hash: "Cortana"
+    });
+    org.save().then(function(newOrg){
+      request(app)
+        .post('/api/users/signup')
+        .send({
+          firstName: 'i',
+          lastName: 'don\'t',
+          jobTitle: 'really',
+          email: 'care',
+          password: 'about',
+          businessName: 'Pillar of Autumn',
+          businessPassword: 'one'
+        })
+        .end(function(err, res){
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message).to.equal('Wrong organization password.');
+          done();
+        });
+    });
   });
 
   xit('Should not allow allow users to sign up with an existing email address', function(done){
