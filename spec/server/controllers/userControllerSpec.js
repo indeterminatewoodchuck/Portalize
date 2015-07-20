@@ -116,8 +116,39 @@ describe('User Controller', function(){
     });
   });
 
-  xit('Should not allow allow users to sign up with an existing email address', function(done){
-
+  it('Should not allow users to sign up with an existing email address', function(done){
+    var newOrg = db.Organization.build({
+      name: 'lollercopter',
+      password_hash: 'lollerblades'
+    });
+    newOrg.save().then(function(x){
+      var newUser = db.User.build({
+        first_name: 'Rick',
+        last_name: 'Astley',
+        OrganizationID: 21,
+        title: 'Rick Roll',
+        email: 'rick@roll.com',
+        password_hash: 'rickrolld'
+      });
+      newUser.save().then(function(user){
+        request(app)
+          .post('/api/users/signup')
+          .send({
+            firstName: 'i',
+            lastName: 'don\'t',
+            jobTitle: 'really',
+            email: 'rick@roll.com',
+            password: 'about',
+            businessName: 'lollercopter',
+            businessPassword: 'lollerblades'
+          })
+          .end(function(err, res){
+            expect(res.body.success).to.equal(false);
+            expect(res.body.message).to.equal('User already exists.');
+            done();
+          });
+      });
+    });
   });
 
   xit('Should issue a token upon successful sign up', function(done){
