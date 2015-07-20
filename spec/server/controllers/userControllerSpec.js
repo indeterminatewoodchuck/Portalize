@@ -30,7 +30,7 @@ describe('User Controller', function(){
       OrganizationID: 50,
       title: 'T-1000',
       email: 'governator@california.gov',
-      password: 'terminator'
+      password_hash: 'terminator'
     });
     newUser.save().then(function(user){
       request(app)
@@ -44,8 +44,25 @@ describe('User Controller', function(){
     });
   });
 
-  xit('Should issue a token upon successful sign in', function(){
-
+  it('Should issue a token upon successful sign in', function(done){
+    var newUser = db.User.build({
+      first_name: 'Jackie',
+      last_name: 'Chan',
+      OrganizationID: 20,
+      title: 'Inspector Lee',
+      email: 'jackie@chan.com',
+      password_hash: 'supercop'
+    });
+    newUser.save().then(function(x){
+      request(app)
+        .post('/api/users/signin')
+        .send({ email: 'jackie@chan.com', password: 'supercop' })
+        .end(function(err, res){
+          expect(res.body.success).to.equal(true);
+          expect(res.body.message).to.equal('Enjoy your token!');
+          expect(res.body.token).to.exist;
+          done();
+        });
+    });
   });
-
 });
