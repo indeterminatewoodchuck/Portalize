@@ -27,14 +27,15 @@ module.exports = {
         else {
           db.User.findOne({ where: { email: req.body.email } }).then(function(user){
             if( user ){ res.json({ success: false, message: 'User already exists.' }); }
-            db.User.build({
+            var orgUser = db.User.build({
               first_name: req.body.firstName,
               last_name: req.body.lastName,
               OrganizationID: org.id,
               title: req.body.jobTitle,
               email: req.body.email,
               password_hash: req.body.password
-            }).save().then(function(newUser){
+            });
+            orgUser.save().then(function(newUser){
               var token = jwt.sign(newUser, 'disdasecretyo', { expiresInMinutes: 20 });
               res.json({ success: true, message: 'Enjoy your token!', token: token });
             });
@@ -49,7 +50,7 @@ module.exports = {
       if( org ){ res.json({ success: false, message: 'Organization already exists.' }); }
       db.User.findOne({ where: { email: req.body.email } }).then(function(user){
         if( user ){ res.json({ success: false, message: 'User already exists.' }); }
-        db.Organization.build({
+        var orgBuild = db.Organization.build({
           name: req.body.businessName,
           address: req.body.address,
           city: req.body.city,
@@ -58,15 +59,17 @@ module.exports = {
           country: req.body.country,
           industry: req.body.industry,
           password_hash: req.body.businessPassword
-        }).save().then(function(newOrg){
-          db.User.build({
+        });
+        orgBuild.save().then(function(newOrg){
+          var userBuild = db.User.build({
             first_name: req.body.firstName,
             last_name: req.body.lastName,
             OrganizationID: newOrg.id,
             title: req.body.jobTitle,
             email: req.body.email,
             password_hash: req.body.password
-          }).save().then(function(newUser){
+          })
+          userBuild.save().then(function(newUser){
             var token = jwt.sign(newUser, 'disdasecretyo', { expiresInMinutes: 20 });
             res.json({ success: true, message: 'Enjoy your token!', token: token });
           });
