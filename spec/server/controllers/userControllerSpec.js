@@ -65,4 +65,20 @@ describe('User Controller', function(){
         });
     });
   });
+
+  xit('Should not allow users to sign up with a non-existing organizations', function(done){
+
+  });
+
+  xit('Should not allow users to sign up with the wrong organization password', function(done){
+
+  });
+
+  xit('Should not allow allow users to sign up with an existing email address', function(done){
+
+  });
+
+  xit('Should issue a token upon successful sign up', function(done){
+
+  });
 });
