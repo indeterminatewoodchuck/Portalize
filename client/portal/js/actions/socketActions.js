@@ -14,9 +14,8 @@ socket.on('staffRoom', function(data) {
 });
 
 var socketActions = {
-  staffReady: function() {
-    // add business name as second argument
-    socket.emit('staffReady');
+  staffReady: function(orgName) {
+    socket.emit('staffReady', orgName);
   }
 };
 

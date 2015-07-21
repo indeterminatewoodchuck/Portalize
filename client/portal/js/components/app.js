@@ -11,31 +11,41 @@ var Main = React.createClass({
   // Ask server for org name, employee name / ID, other employee info
 
   getInitialState: function(){
-    return { 
-      roomname: appStore.getRoom()
-    };
+    return appStore.getState();
+  },
+
+  componentWillMount: function() {
+    this.getEmployeeData();
   },
 
   componentDidMount: function(){
-    appStore.addRoomChangeListener(this._onRoomChange);
+    appStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
-    appStore.removeRoomChangeListener(this._onRoomChange);    
+    appStore.removeChangeListener(this._onChange);    
   },
 
-  _onRoomChange: function() {
-    this.setState({
-      roomname: appStore.getRoom()
-    });
+  getEmployeeData: function() {
+    // Could check local storage first?
+    appActions.getEmployeeData();
+  },
+
+  _onChange: function() {
+    this.setState(appStore.getState());
   },
 
   render: function() {
+    var orgName = this.state.orgName;
+    var firstName = this.state.employeeFirstName;
+    var lastName = this.state.employeeLastName;
+    var email = this.state.employeeEmail;
+
     return (
       <div>
-        <NavBar />
+        <NavBar firstName={firstName} lastName={lastName} email={email} />
         <VideoChat />
-        <Queue />
+        <Queue orgName={orgName} />
         <TextChat />
       </div>
     );

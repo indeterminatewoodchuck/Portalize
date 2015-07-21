@@ -3,8 +3,8 @@ var socketActions = require('../actions/socketActions');
 
 var Queue = React.createClass({
   handleStaffReady: function(){
-    // Need to pass down org name and send with staffReady
-    socketActions.staffReady();
+    var orgName = this.props.orgName;
+    socketActions.staffReady(orgName);
   },
 
   render: function(){
