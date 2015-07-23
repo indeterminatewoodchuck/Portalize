@@ -34,12 +34,12 @@ var Queue = React.createClass({
     });
 
     return (
-      <div>
-        <div>
+      <div className='queue'>
+        <div className='queueList'>
           {customerCount}
           {queuedCustomers}
         </div>
-        <button onClick={ this.handleStaffReady }>Chat with next user</button>
+        <button className='dequeue' onClick={ this.handleStaffReady }>Chat with next user</button>
       </div>
     );
   }

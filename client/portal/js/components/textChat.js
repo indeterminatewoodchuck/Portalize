@@ -39,14 +39,14 @@ var TextChat = React.createClass({
 
     return (
       <div>
-        <div className='send-chat'>
-          <form onSubmit={this.handleSubmit}>
-            <input ref='messageInput' type='text' placeholder='Type your message here' />
-            <input type='submit' />
-          </form>
-        </div>
         <div className='message-log'>
           {messages}
+        </div>
+        <div className='send-chat'>
+          <form onSubmit={this.handleSubmit}>
+            <input className='chat-box' ref='messageInput' type='text' placeholder='Type your message here' />
+            <input className='submit' type='submit' />
+          </form>
         </div>
       </div>
       );
