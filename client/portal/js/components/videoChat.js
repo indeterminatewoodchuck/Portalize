@@ -1,5 +1,6 @@
 var React = require('react');
 var videoChatStore = require('../stores/videoChatStore');
+var VideoElement = require('./videoElement.js');
 
 var VideoChat = React.createClass({
   getInitialState: function(){
@@ -25,24 +26,16 @@ var VideoChat = React.createClass({
   },
 
   render: function(){
-    var videoNodes = function() {
-      var nodes = [];
-      for (var key in this.state) {
-        if (this.state[key]) {
-          // must pass unique key property to each child for React to render properly
-          nodes.push(<video id={key} key={this.state[key].ID}
-          src={this.state[key].stream} autoPlay></video>);
-        }
-      }
-      return nodes;
-    }.bind(this);
-
     return (
-      <div>
-        <div>This is the Video Chat Hooray Hooray Hooray!</div>
-        {videoNodes()}
-      </div>
-    );
+        <div id='remoteStreamVideo'>
+          {this.state.remoteStream ? <VideoElement key='remoteStream' value={this.state.remoteStream} size="640" /> : 
+          <div></div>}
+          <div id='localStreamVideo'>
+            {this.state.localStream ? <VideoElement key='localStream' value={this.state.localStream} size="160" /> :
+            <div></div>}
+          </div>
+        </div>
+    )
   }
 });
 
