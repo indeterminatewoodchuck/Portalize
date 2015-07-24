@@ -28,6 +28,9 @@ var TextChat = React.createClass({
     var message = event.target[0].value;
     icecommActions.sendTextMessage(message);
     React.findDOMNode(this.refs.messageInput).value = '';
+    var messageLogScrollHeight = React.findDOMNode(this.refs.messageLog).scrollHeight;
+    console.log(messageLogScrollHeight);
+    React.findDOMNode(this.refs.messageLog).scrollTop = messageLogScrollHeight;
   },
 
   render: function() {
@@ -39,7 +42,7 @@ var TextChat = React.createClass({
 
     return (
       <div>
-        <div className='message-log'>
+        <div className='message-log' ref='messageLog'>
           {messages}
         </div>
         <div className='send-chat'>

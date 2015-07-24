@@ -1,5 +1,6 @@
 var React = require('react');
 var queueStore = require('../stores/queueStore');
+var appActions = require('../actions/appActions');
 var socketActions = require('../actions/socketActions');
 
 var Queue = React.createClass({
@@ -22,6 +23,7 @@ var Queue = React.createClass({
   handleStaffReady: function(){
     var web_name = this.props.web_name;
     socketActions.staffReady(web_name);
+    appActions.clearMessages();
   },
 
   render: function(){
