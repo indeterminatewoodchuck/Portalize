@@ -32,9 +32,14 @@ var appActions = {
         }
         window.location.href = window.location.origin + '/login';
       });
+  },
+
+  clearMessages: function(){
+    AppDispatcher.dispatch({
+      actionType: appConstants.CLEAR_MESSAGES
+    });
   }
 };
-
 
 
 module.exports = appActions;

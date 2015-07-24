@@ -7,8 +7,13 @@ var CHANGE = 'CHANGE';
 
 var _messages = [];
 
+// I DON'T THINK THIS addMessage IS USED ANYWHERE
 var addMessage = function(message) {
   _messages.push(message);
+};
+
+var clearMessages = function() {
+  _messages = [];
 };
 
 var textChatStore = objectAssign({}, EventEmitter.prototype, {
@@ -28,7 +33,10 @@ textChatStore.dispatchToken = AppDispatcher.register(function(payload) {
     _messages.push([payload.user, payload.message]);
     textChatStore.emit(CHANGE);
   }
-
+  else if (payload.actionType === appConstants.CLEAR_MESSAGES) {
+    clearMessages();
+    textChatStore.emit(CHANGE);
+  }
   return true;
 });
 

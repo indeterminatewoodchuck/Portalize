@@ -13,6 +13,11 @@ var TextChat = React.createClass({
     textChatStore.addChangeListener(this._onChange);
   },
 
+  componentDidUpdate: function() {
+    var node = React.findDOMNode(this.refs.messageLog);
+    node.scrollTop = node.scrollHeight;
+  },
+
   componentWillUnmount: function(){
     textChatStore.removeChangeListener(this._onChange);    
   },
@@ -39,7 +44,7 @@ var TextChat = React.createClass({
 
     return (
       <div>
-        <div className='message-log'>
+        <div className='message-log' ref='messageLog' >
           {messages}
         </div>
         <div className='send-chat'>
