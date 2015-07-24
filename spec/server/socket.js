@@ -10,20 +10,18 @@ var options = {
 
 describe('Socket.io Server Routing', function() {
 
-  var server;
-
-  beforeEach(function() {
-    server = require('../../index.js');
-  });
-
-  afterEach(function() {
-    server = undefined;
-  });
+  var server = require('../../index.js');
 
   it('Should send staffRoom event and customerRoom event when staff member connects after customer', function(done) {
     var customerSocket1 = io.connect(socketTestURL, options);
+    var customerData = {
+      name: 'Ben',
+      email: 'test@test.com',
+      question: 'I need help',
+      orgName: 'ShoeLocker'
+    };
     customerSocket1.on('connect', function(data){
-      customerSocket1.emit('customerRequest', 'ShoeLocker')
+      customerSocket1.emit('customerRequest', customerData);
     });
     var staffSocket1 = io.connect(socketTestURL, options);
     staffSocket1.on('connect', function(data){
@@ -82,8 +80,14 @@ describe('Socket.io Server Routing', function() {
 
   it('Room names of disconnected staff from previous test are removed from socketroute.rooms array', function(done) {
     var customerSocket1 = io.connect(socketTestURL, options);
+    var customerData = {
+      name: 'Ben',
+      email: 'test@test.com',
+      question: 'I need help',
+      orgName: 'ShoeLocker'
+    };
     customerSocket1.on('connect', function(){
-      customerSocket1.emit('customerRequest', 'ShoeLocker');
+      customerSocket1.emit('customerRequest', customerData);
     });
     var staffSocket1 = io.connect(socketTestURL, options);
     staffSocket1.on('connect', function(){
@@ -106,51 +110,78 @@ describe('Socket.io Server Routing', function() {
     var refCustomer3;
     var refCustomer4;
 
+    var customerData1 = {
+      name: 'Ben',
+      email: 'test@test.com',
+      question: 'I need help',
+      orgName: 'ShoeLocker'
+    };
+
+    var customerData2 = {
+      name: 'George',
+      email: 'test2@test.com',
+      question: 'Help me!',
+      orgName: 'ShoeLocker'
+    };
+
     customerSocket1.on('connect', function() {
-      customerSocket1.emit('customerRequest', 'ShoeLocker');
+      customerSocket1.emit('customerRequest', customerData1);
     });
     customerSocket2.on('connect', function() {
-      customerSocket2.emit('customerRequest', 'ShoeLocker');
-      customerSocket1.disconnect();
-      staffSocket1 = io.connect(socketTestURL, options);
+      customerSocket2.emit('customerRequest', customerData2);
     });
 
+    var num = 0;
     var staffSocket1 = io.connect(socketTestURL, options);
     staffSocket1.on('connect', function() {
       staffSocket1.emit('staffReady', 'ShoeLocker');
       staffSocket1.on('queueStatus', function(queue) {
         num += 1;
         if (num === 3) {
+          expect(queue.length).to.equal(3);
+          customerSocket2.disconnect();
+        }
+        if (num === 4) {
+          expect(queue.length).to.equal(2);
           staffSocket1.disconnect();
+          customerSocket1.disconnect();
           refCustomer3.disconnect();
           refCustomer4.disconnect();
           done();
         }
       });
     });
-    var num = 0;
 
     staffSocket1.on('staffRoom', function(name) {
       expect(name).to.equal('room_ShoeLocker_6');
     });
-    customerSocket1.on('customerRoom', function(name) {
-      expect(Constructor).to.throw(Error);
-    });
 
-    customerSocket2.on('customerRoom', function(name) {
+    customerSocket1.on('customerRoom', function(name) {
       expect(name).to.equal('room_ShoeLocker_6');
       var customerSocket3 = io.connect(socketTestURL, options);
       var customerSocket4 = io.connect(socketTestURL, options);
+      var customerData3 = {
+        name: 'Catherine',
+        email: 'test2@test.com',
+        question: 'Help',
+        orgName: 'ShoeLocker'
+      };
+      var customerData4 = {
+        name: 'Pancho',
+        email: 'test4@test.com',
+        question: 'Where is it?',
+        orgName: 'ShoeLocker'
+      };
       customerSocket3.on('connect', function() {
         refCustomer3 = customerSocket3;
-        customerSocket3.emit('customerRequest', 'ShoeLocker');
+        customerSocket3.emit('customerRequest', customerData3);
       });
       customerSocket4.on('connect', function() {
         refCustomer4 = customerSocket4;
-
-        customerSocket4.emit('customerRequest', 'ShoeLocker');
+        customerSocket4.emit('customerRequest', customerData4);
       });
     });
+
   });
 
   it('Do not emit "staffRoom" to staffSocket if the staff currently in a room with no customer', function(done) {
@@ -177,8 +208,14 @@ describe('Socket.io Server Routing', function() {
 
   it('If customer emits "customerRequest" and no staff available, customer should received "staffUnavailable" event', function(done) {
     var customerSocket1 = io.connect(socketTestURL, options);
+    var customerData1 = {
+      name: 'Steve',
+      email: 'test4@test.com',
+      question: 'Where is it?',
+      orgName: 'ShoeLocker'
+    };
     customerSocket1.on('connect', function() {
-      customerSocket1.emit('customerRequest', 'ShoeLocker');
+      customerSocket1.emit('customerRequest', customerData1);
     });
 
     customerSocket1.on('staffUnavailable', function() {
@@ -192,9 +229,9 @@ describe('Socket.io Server Routing', function() {
     staffSocket5.on('connect', function() {
       staffSocket5.emit('staffReady', 'ShoeLocker');
     });
-    var staffQueueCount = 1;
+    var staffQueueCount = 0;
     staffSocket5.on('queueStatus', function(queue) {
-      if (staffQueueCount === 4) {
+      if (staffQueueCount === 3) {
         staffSocket5.disconnect();
         customerSocket1.disconnect();
         customerSocket2.disconnect();
@@ -204,16 +241,34 @@ describe('Socket.io Server Routing', function() {
       staffQueueCount += 1;
     });
     var customerSocket1 = io.connect(socketTestURL, options);
+    var customerData1 = {
+      name: 'Catherine',
+      email: 'test2@test.com',
+      question: 'Help',
+      orgName: 'ShoeLocker'
+    };
     customerSocket1.on('connect', function() {
-      customerSocket1.emit('customerRequest', 'ShoeLocker');
+      customerSocket1.emit('customerRequest', customerData1);
     });
+    var customerData2 = {
+      name: 'Francisco',
+      email: 'test4@test.com',
+      question: 'Where is it?',
+      orgName: 'ShoeLocker'
+    };
     var customerSocket2 = io.connect(socketTestURL, options);
     customerSocket2.on('connect', function() {
-      customerSocket2.emit('customerRequest', 'ShoeLocker');
+      customerSocket2.emit('customerRequest', customerData2);
     });
+    var customerData3 = {
+      name: 'Jake',
+      email: 'test1@test.com',
+      question: 'What is it?',
+      orgName: 'ShoeLocker'
+    };
     var customerSocket3 = io.connect(socketTestURL, options);
     customerSocket3.on('connect', function() {
-      customerSocket3.emit('customerRequest', 'ShoeLocker');
+      customerSocket3.emit('customerRequest', customerData3);
     });
     customerSocket2.on('customerQueueStatus', function(num) {
       expect(num).to.equal(1);

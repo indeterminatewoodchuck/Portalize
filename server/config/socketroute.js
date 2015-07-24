@@ -58,9 +58,9 @@ socket.socketroute = function(io, user) {
     }
     for (var k = 0; k < socket.customerQueue[orgName].length; k++) {
       if (staffCount === 0) {
-        io.to(socket.customerQueue[orgName][k]).emit('staffUnavailable');
+        io.to(socket.customerQueue[orgName][k].userId).emit('staffUnavailable');
       } else {
-        io.to(socket.customerQueue[orgName][k]).emit('customerQueueStatus', k + 1);
+        io.to(socket.customerQueue[orgName][k].userId).emit('customerQueueStatus', k + 1);
       }
     }
   };
@@ -119,8 +119,8 @@ socket.socketroute = function(io, user) {
       Remove the name of that available room from socket.rooms[organizationName]
     */
     if (socket.customerQueue[orgName] && socket.customerQueue[orgName].length > 0) {
-      var customerId = socket.customerQueue[orgName].shift();
-      io.to(customerId).emit('customerRoom', socket.rooms[orgName].shift());
+      var customerData = socket.customerQueue[orgName].shift();
+      io.to(customerData.userId).emit('customerRoom', socket.rooms[orgName].shift());
     }
     queueStatus(orgName);
   });
@@ -131,20 +131,23 @@ socket.socketroute = function(io, user) {
     'customerRequest' event, the back-end will add the customer's Socket Id to the
     socket.customerQueue[orgName] array.
   */
-  user.on('customerRequest', function(orgName) {
+  user.on('customerRequest', function(requestObject) {
     user.category = "customer";
-    user.organizationName = orgName;
+    user.organizationName = requestObject.orgName;
+    var orgName = requestObject.orgName;
+    requestObject.userId = user.id;
     socket.customerQueue[orgName] = socket.customerQueue[orgName] || []; 
 
     /*
       If the customer emits 'customerRequest' when they are already in the customerQueue,
       do nothing
     */
-    if (socket.customerQueue[orgName].indexOf(user.id) !== -1) {
-      return;
+    for (var j = 0; j < socket.customerQueue[orgName].length; j++) {
+      if (socket.customerQueue[orgName][j].userId === user.id) {
+        return;
+      }
     }
-
-    socket.customerQueue[orgName].push(user.id);
+    socket.customerQueue[orgName].push(requestObject);
 
     /*
       Check if there are a room open with a staff member available to help the customer.
@@ -182,9 +185,10 @@ socket.socketroute = function(io, user) {
         socket.customerQueue[organizationName]. If it is, remove it
       */
 
-      var customerIndex = socket.customerQueue[user.organizationName].indexOf(user.id);
-      if (customerIndex !== -1) {
-        socket.customerQueue[user.organizationName].splice(customerIndex, 1);
+      for (var m = 0; m < socket.customerQueue[user.organizationName].length; m++) {
+        if (socket.customerQueue[user.organizationName][m].userId === user.id) {
+          socket.customerQueue[user.organizationName].splice(m, 1);
+        }
       }
     }
     queueStatus(user.organizationName);
