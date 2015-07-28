@@ -69,15 +69,22 @@ var OrgSignup = React.createClass({
       industry         : this.refs.industry.getDOMNode().value
     }
 
-    console.log(resData);
-
-    var xmlhttp = helper.makePostRequest("/api/users/signupwithorg", resData);
-    xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4) {
-         console.log(xmlhttp.responseText);
-         var answer = JSON.parse(xmlhttp.responseText);
-         console.log(answer);
-         window.location.href=window.location.origin;
+    var _this = this;
+    if (helper.userDataValid(resData, function(message) {
+      _this.props.handleError("orgSignupErrorMessage", message);
+    })) {
+      var xmlhttp = helper.makePostRequest("/api/users/signupwithorg", resData);
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4) {
+           var answer = JSON.parse(xmlhttp.responseText);
+           if (answer.success === 'false') {
+             _this.props.handleError("orgSignupErrorMessage", answer.message);
+           }
+           else
+           {
+             window.location.href=window.location.origin;
+           }
+        }
       }
     }
   }

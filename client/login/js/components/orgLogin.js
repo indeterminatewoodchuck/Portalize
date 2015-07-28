@@ -19,9 +19,8 @@ var OrgLogin = React.createClass({
 
   handleLogin: function(e) {
     e.preventDefault();
-
+    this.props.clearErrors();
     var field = this.props.fieldValues;
-
     var resData = {
       firstName        : field.firstName,
       lastName         : field.lastName,
@@ -32,13 +31,22 @@ var OrgLogin = React.createClass({
       businessPassword : this.refs.businesspassword.getDOMNode().value
     }
 
-    console.log(resData);
-
-    var xmlhttp = helper.makePostRequest("/api/users/signup", resData);
-    xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4) {
-         var answer = JSON.parse(xmlhttp.responseText);
-         window.location.href=window.location.origin;
+    var _this = this;
+    if (helper.userDataValid(resData, function(message) {
+      _this.props.handleError("orgLoginErrorMessage", message);
+    })) {
+      var xmlhttp = helper.makePostRequest("/api/users/signup", resData);
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4) {
+           var answer = JSON.parse(xmlhttp.responseText);
+           if (answer.success === 'false') {
+             _this.props.handleError("orgLoginErrorMessage", answer.message);
+           }
+           else
+           {
+             window.location.href=window.location.origin;
+           }
+        }
       }
     }
   }

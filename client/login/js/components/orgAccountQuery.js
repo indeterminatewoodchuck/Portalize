@@ -15,7 +15,6 @@ var OrgAccountQuery = React.createClass({
   handleShowOrgLogin: function(event) {
     event.preventDefault();
     this.props.showOrgLogin();
-
   },
 
   handleShowOrgSignup: function(event) {

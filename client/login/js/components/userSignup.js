@@ -9,19 +9,19 @@ var UserSignup = React.createClass({
           <ul className="form-fields">
             <li>
               <label>First Name</label>
-              <input type="text" ref="firstname" onChange={this.handleChange} />
+              <input type="text" ref="firstname" onChange={this.handleChange} maxLength="50" />
             </li>
             <li>
               <label>Last Name</label>
-              <input type="text" ref="lastname" onChange={this.handleChange}/>
+              <input type="text" ref="lastname" onChange={this.handleChange} maxLength="50" />
             </li>
             <li>
               <label>Job Title</label>
-              <input type="text" ref="jobtitle" onChange={this.handleChange}/>
+              <input type="text" ref="jobtitle" onChange={this.handleChange} maxLength="50"/>
             </li>
             <li>
               <label>Email</label>
-              <input type="email" ref="email2" onChange={this.handleChange}/>
+              <input type="email" ref="email2" onChange={this.handleChange} maxLength="128"/>
             </li>
             <li>
               <label>Password</label>
