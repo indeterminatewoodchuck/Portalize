@@ -5,7 +5,7 @@ var AboutPage = React.createClass({
 
   render: function() {
     return (
-      <div className="container">
+      <div>
         <div className="row">
               <div className="col-md-3" id="leftCol">
                       
@@ -104,9 +104,9 @@ var AboutPage = React.createClass({
                         please ensure that the Portalize stylesheet link is placed <b>before</b> all other stylesheet links in your HTML file.
                       </p>
                       <p>
-                        Each element within Portalize’s user interface has a unique ID attribute, which used to manipulate the CSS properties 
+                        Each element within Portalize’s user interface has a unique ID attribute, which is used to manipulate the CSS properties 
                         of each element using the appropriate CSS selector.  See the example interfaces below for a summary of the appropriate 
-                        CSS selectors to use to change the properties of each element.  Please note that sliding panel interface and the embedded 
+                        CSS selectors to use to change the properties of each element.  Please note that the sliding panel interface and the embedded 
                         interface have slightly different IDs for similar elements.
                       </p><hr />
 
@@ -137,26 +137,49 @@ var AboutPage = React.createClass({
                           </a>
                         </div>
                       </div>
-                      
-
-                    
-                      <h2 id="sec3">Section 3</h2>
-                      <p>
-                        Images are responsive sed @mdo but sum are more fun peratis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
-                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae 
-                        dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia cor magni dolores 
-                        eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, 
-                        sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
-                        Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut..
-                      </p>
-                      <p>
-                        Fos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, 
-                        sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
-                        Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut..
-                      </p>
-                    
-                    
-
+                                          
+                      <h2 id="sec3">Frequently Asked Questions (FAQ)</h2>
+                        <h3>What is Portalize?</h3>
+                        <p>Portalize is a customer support solution that allows 
+                        businesses to add video chat functionality to their websites and manage customer 
+                        help requests.</p>
+                        <h3>How do I implement the Portalize Chat Library on my e&#8209;commerce website?</h3>
+                        <p>In order to integrate Portalize Video Chat into your e&#8209;commerce platform, 
+                        one member of your company will need to create a company login account with Portalize.  
+                        Additional staff members of your company wishing to interact with customers 
+                        using Portalize Video Chat should sign up for an individual account linked to the 
+                        company account.  Logging in will grant them access to the portal page that receives 
+                        the communication feeds from your company&#39;s customers.</p>
+                        <p>Additionally, in order to implement Video Chat on your customer-facing pages 
+                        using the Portalize Chat Library, you will need to call our library API by inserting 
+                        the following script tag into the html code of your customer pages:</p>
+                        <pre><code className='hljs javascript'>
+                          &lt;script src="http://portalize.io/library"&gt;&lt;/script&gt;
+                        </code></pre>
+                        <p>The insertion of a few additional lines of code into your html will also be necessary 
+                        to render the video chat interface on your customer-facing pages.  As the particular
+                        lines of code are dependent on your choice of interface, please see
+                        "Getting Started -- Choosing a Customer Interface Style" for more specific instructions.
+                        </p>
+                        <h3>How does the customer queuing system work?</h3>
+                        <p>Logged in customers wishing to speak with a support staff member are placed into a 
+                        queue.  A support staff member is connected with the first waiting customer after indicating 
+                        his or her availability with a button click.</p>
+                        <h3>Does the Portalize Chat Library work with all browsers?</h3>
+                        <p>Portalize utilizes Bootstrap for web page styling and is powered by the WebRTC API.  
+                        As a result, Portalize&#39;s browser compatibility is determined by browser support for 
+                        those technologies.  Currently, Portalize works with the latest versions of Chrome, 
+                        Firefox and Opera.</p>
+                        <h3>Can I custom style the customer-facing chat interface that is generated by the 
+                        Portalize Chat Library?</h3>
+                        <p>The customer-facing chat interface can be styled to match your e-commerce platform 
+                        using a customized css stylesheet.</p>
+                        <h3>Are Portalize&#39;s connections secure?</h3>
+                        <p>The WebRTC technology utilized by Portalize allows it to offer safe, private, 
+                        real-time communications.</p>
+                        <h3>How much does it cost to use Portalize?</h3>
+                        <p>To be determined.</p>
+                                
                       <h2 id="sec4">Section 4</h2>
                       <p>
                         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
