@@ -19,10 +19,10 @@ var About = React.createClass({
                     <a href="https://github.com/nokane" target="_blank"><i className="fa fa-github-square fa-1x"></i></a>
                   </li>
                   <li className="social">
-                    <a href="https://www.linkedin.com/pub/niall-o-kane/aa/63b/826" target="_blank"><i className="fa fa-linkedin-square fa-1x"></i></a>
+                    <a href="https://www.linkedin.com/in/nokane" target="_blank"><i className="fa fa-linkedin-square fa-1x"></i></a>
                   </li>
                   <li className="social">
-                    <a href="https://angel.co/niall-o-kane" target="_blank"><i className="fa fa-angellist fa-1x"></i></a>
+                    <a href="https://angel.co/nokane" target="_blank"><i className="fa fa-angellist fa-1x"></i></a>
                   </li>
                 </ul>
               </div>
